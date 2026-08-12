@@ -611,13 +611,14 @@
         </button>
         <div class="section-title"><h2>便利なサービス</h2></div>
         <div class="quick-grid">
-          <button class="quick-tile" type="button" data-action="change-tab" data-tab="coupons">
+          <button class="quick-tile quick-tile--coupon" type="button" data-action="change-tab" data-tab="coupons">
             <span class="quick-tile__icon">${icons.ticket}</span><span><strong>クーポン</strong><small>利用可能 ${availableCount}枚</small></span>
           </button>
-          <button class="quick-tile" type="button" data-action="open-notices">
+          <button class="quick-tile quick-tile--notice" type="button" data-action="open-notices">
             <span class="quick-tile__icon">${icons.bell}</span><span><strong>お知らせ</strong><small>最新情報を確認</small></span>
           </button>
         </div>
+        <div class="section-title section-title--gacha"><h2>毎日のお楽しみ</h2><span>1日1回無料</span></div>
         <button class="daily-gacha-card ${playedToday ? "is-complete" : ""}" type="button" data-action="open-gacha">
           <span class="daily-gacha-card__copy">
             <span class="daily-gacha-card__badge">1日1回</span>
