@@ -10,6 +10,11 @@ window.MINI_APP_CONFIG = {
     facilityName: "福利厚生倶楽部",
     initial: "R",
   },
+  line: {
+    // LINE Developersで発行されたLIFF ID。LINE内では公式の認証処理に使用します。
+    liffId: "2011079686-NA3rTNvk",
+  },
+
 
   theme: {
     primary: "#3b7de3",
@@ -33,7 +38,7 @@ window.MINI_APP_CONFIG = {
   },
 
   lineConsent: {
-    localPreviewOnly: true,
+    localPreviewOnly: false,
     title: "認証",
     appName: "リロクラブ",
     lead: "このサービスは、以下の情報へのアクセスをリクエストしています。",

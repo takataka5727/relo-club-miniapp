@@ -14,6 +14,7 @@
   if (!config || !app) throw new Error("アプリ設定を読み込めませんでした。");
   const isLineClient = typeof navigator !== "undefined" && /\bLine\//i.test(navigator.userAgent || "");
   const requiresLocalConsent = config.lineConsent.localPreviewOnly && !isLineClient && localStorage.getItem(STORAGE.lineConsent) !== "true";
+  let liffReady = false;
 
   const state = {
     screen: requiresLocalConsent ? "line-consent" : localStorage.getItem(STORAGE.linked) === "true" ? "app" : "verify",
@@ -55,13 +56,31 @@
     starFilled: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="currentColor" d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg>',
   };
 
-  applyTheme();
-  render();
+  initialize();
 
-  app.addEventListener("click", handleClick);
-  app.addEventListener("submit", handleSubmit);
-  app.addEventListener("input", handleInput);
-  app.addEventListener("keydown", handleKeydown);
+  async function initialize() {
+    applyTheme();
+    await initializeLiff();
+    render();
+
+    app.addEventListener("click", handleClick);
+    app.addEventListener("submit", handleSubmit);
+    app.addEventListener("input", handleInput);
+    app.addEventListener("keydown", handleKeydown);
+  }
+
+  async function initializeLiff() {
+    const liffId = config.line && config.line.liffId;
+    const canUseLiff = Boolean(liffId && window.liff && window.location.protocol === "https:");
+    if (!canUseLiff) return;
+
+    try {
+      await window.liff.init({ liffId });
+      liffReady = true;
+    } catch (error) {
+      console.warn("LIFFの初期化に失敗したため、プレビュー表示を続けます。", error);
+    }
+  }
 
   function readUsedCoupons() {
     try {
@@ -144,6 +163,14 @@
       return;
     }
     if (action === "show-line-consent") {
+      if (!isLineClient) {
+        showToast("LINEアプリ内で開くと連携状態を確認できます");
+        return;
+      }
+      if (liffReady) {
+        showToast("LINEと連携済みです");
+        return;
+      }
       state.error = "";
       state.screen = "line-consent";
       window.scrollTo({ top: 0, behavior: "smooth" });

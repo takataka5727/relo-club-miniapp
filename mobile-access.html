@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#06c755" />
+  <title>LINEでミニアプリを開く</title>
+  <style>
+    :root {
+      font-family: "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+      color: #080808;
+      background: #fff;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      display: grid;
+      min-height: 100vh;
+      margin: 0;
+      padding: 40px 24px;
+      place-items: center;
+      background: #fff;
+    }
+    main {
+      display: flex;
+      width: min(100%, 750px);
+      min-height: min(930px, calc(100vh - 80px));
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(70px, 10vh, 145px) 70px 72px;
+      background: #fff;
+      box-shadow: 0 0 22px rgba(0,0,0,.09);
+      text-align: center;
+    }
+    .line-logo {
+      margin: 0 0 10px;
+      color: #00bd31;
+      font: 900 clamp(50px, 6vw, 64px)/1 Arial, Helvetica, sans-serif;
+      letter-spacing: -.055em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(20px, 2.7vw, 29px);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .qr-frame {
+      width: 250px;
+      max-width: 70vw;
+      margin: 42px auto 0;
+      background: #fff;
+    }
+    #qr, #qr svg { display: block; width: 100%; height: auto; }
+    .guide {
+      margin: 82px 0 0;
+      font-size: clamp(15px, 2vw, 20px);
+      line-height: 1.55;
+    }
+    .description {
+      margin: 16px 0 0;
+      font-size: clamp(14px, 1.8vw, 18px);
+      line-height: 1.65;
+    }
+    .error { margin: 28px 0; color: #c64f5b; font-size: 14px; line-height: 1.7; }
+    @media (max-width: 600px) {
+      body { padding: 18px; }
+      main { min-height: calc(100vh - 36px); padding: 54px 24px 48px; }
+      .qr-frame { width: 220px; margin-top: 34px; }
+      .guide { margin-top: 54px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="line-logo" aria-label="LINE">LINE</p>
+    <h1>スマートフォン版LINEで<br />ご利用になれます</h1>
+    <div class="qr-frame"><div id="qr" aria-label="スマートフォン版LINEで読み取るQRコード"></div></div>
+    <p class="guide">スマートフォン版LINEでQRコードを<br />スキャンしてください。</p>
+    <p class="description">ログインや追加アプリのインストールをせずに、<br />スマートフォン版LINEから<br />リロクラブ ミニアプリをご利用いただけます。</p>
+    <p class="url" id="target-url" hidden></p>
+    <a class="open-button" id="open-link" href="#" hidden>リンクを開く</a>
+  </main>
+  <script src="./app-config.js"></script>
+  <script src="./mobile-access.js"></script>
+</body>
+</html>
