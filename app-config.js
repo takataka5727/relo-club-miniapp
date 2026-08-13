@@ -99,8 +99,11 @@ window.MINI_APP_CONFIG = {
   ],
 
   gacha: {
-    title: "毎日ガチャチャレンジ",
+    title: "リロガチャ",
+    englishTitle: "RELO GACHA",
+    homeLabel: "RELO CLUB ORIGINAL",
     description: "1日1回、ガチャを回してポイントを獲得できます。",
+    brandLogo: "./assets/relo-club-logo.png",
     prizes: [
       { id: "point-1", label: "1ポイント", points: 1, weight: 40 },
       { id: "point-5", label: "5ポイント", points: 5, weight: 30 },

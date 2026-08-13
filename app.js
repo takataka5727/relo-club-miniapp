@@ -584,22 +584,32 @@
   }
 
   function renderHome() {
-    const greeting = config.copy.greeting.replace("{lastName}", config.member.lastName);
     const availableCount = config.coupons.length - state.usedCoupons.length;
     const playedToday = isGachaPlayedToday();
     const todayPrize = getGachaPrize(state.gacha.lastPrizeId);
+    const maxGachaPoints = Math.max(0, ...config.gacha.prizes.map((prize) => Number(prize.points) || 0));
     return `
       <section class="home-page" aria-labelledby="home-title">
-        <div class="home-banner">
-          <p class="home-banner__brand">${escapeHtml(config.brand.romanName)}</p>
-          <h1 id="home-title">${escapeHtml(greeting)}</h1>
-          <p>会員証やお得なクーポンを<br />すぐにご利用いただけます。</p>
-          <div class="home-banner__circles" aria-hidden="true">
-            <span class="home-banner__circle">${icons.cart}</span>
-            <span class="home-banner__circle">${icons.ticket}</span>
-            <span class="home-banner__circle">${icons.card}</span>
-          </div>
+        <h1 id="home-title" class="visually-hidden">ホーム</h1>
+        <div class="section-title section-title--gacha">
+          <span class="section-title--gacha__label"><small>${escapeHtml(config.gacha.homeLabel)}</small><h2>毎日のお楽しみ</h2></span>
+          <span class="home-points-chip"><small>保有ポイント</small><strong>${getCurrentPoints().toLocaleString()}P</strong></span>
         </div>
+        <button class="daily-gacha-card ${playedToday ? "is-complete" : ""}" type="button" data-action="open-gacha">
+          <span class="daily-gacha-card__copy">
+            <span class="daily-gacha-card__brandline">
+              <img class="daily-gacha-card__brand-logo" src="${escapeHtml(config.gacha.brandLogo)}" alt="" />
+              <span class="daily-gacha-card__badge">${playedToday ? "本日は参加済み" : "今日の運だめし"}</span>
+            </span>
+            <strong>${escapeHtml(config.gacha.title)}</strong>
+            <span class="daily-gacha-card__reward">${playedToday && todayPrize ? `本日の結果 <b>${Number(todayPrize.points).toLocaleString()}</b>ポイント獲得！` : `最大 <b>${maxGachaPoints.toLocaleString()}</b>ポイントが当たる！`}</span>
+            <span class="daily-gacha-card__status">${playedToday ? "結果をもう一度見る" : "今すぐ無料で回す"} ${icons.arrow}</span>
+          </span>
+          <span class="daily-gacha-card__visual" aria-hidden="true">
+            <span class="daily-gacha-card__dome"><i></i><i></i><i></i><b>R</b></span>
+            <span class="daily-gacha-card__base"><i></i></span>
+          </span>
+        </button>
         <div class="section-title"><h2>会員証</h2><button class="text-button" type="button" data-action="change-tab" data-tab="member">詳しく見る</button></div>
         <button class="home-member-card" type="button" data-action="change-tab" data-tab="member">
           <img src="${escapeHtml(config.member.cardImage)}" alt="" />
@@ -618,19 +628,6 @@
             <span class="quick-tile__icon">${icons.bell}</span><span><strong>お知らせ</strong><small>最新情報を確認</small></span>
           </button>
         </div>
-        <div class="section-title section-title--gacha"><h2>毎日のお楽しみ</h2><span>1日1回無料</span></div>
-        <button class="daily-gacha-card ${playedToday ? "is-complete" : ""}" type="button" data-action="open-gacha">
-          <span class="daily-gacha-card__copy">
-            <span class="daily-gacha-card__badge">1日1回</span>
-            <strong>${escapeHtml(config.gacha.title)}</strong>
-            <small>ガチャを回して最大100ポイント</small>
-            <span class="daily-gacha-card__status">${playedToday && todayPrize ? `本日は${Number(todayPrize.points).toLocaleString()}ポイント獲得済み` : "今日のチャレンジに参加する"} ${icons.arrow}</span>
-          </span>
-          <span class="daily-gacha-card__visual" aria-hidden="true">
-            <span class="daily-gacha-card__dome"><i></i><i></i><i></i><b>R</b></span>
-            <span class="daily-gacha-card__base"><i></i></span>
-          </span>
-        </button>
       </section>`;
   }
 
@@ -642,13 +639,13 @@
       <section class="gacha-page" aria-labelledby="gacha-title">
         <header class="gacha-page__header">
           <button class="gacha-back-button" type="button" data-action="change-tab" data-tab="home" aria-label="ホームへ戻る">${icons.back}</button>
-          <div><p>DAILY CHANCE</p><h1 id="gacha-title">${escapeHtml(config.gacha.title)}</h1></div>
+          <div><p>${escapeHtml(config.gacha.englishTitle)}</p><h1 id="gacha-title">${escapeHtml(config.gacha.title)}</h1></div>
           <span class="gacha-point-balance"><small>保有</small>${getCurrentPoints().toLocaleString()}P</span>
         </header>
         <div class="gacha-stage">
           <p class="gacha-stage__lead">1日1回無料<br /><strong>最大100ポイント</strong>が当たる！</p>
           <div class="gacha-machine is-${phase}" aria-hidden="true">
-            <div class="gacha-machine__sign">RELO CLUB GACHA</div>
+            <div class="gacha-machine__sign">${escapeHtml(config.gacha.englishTitle)}</div>
             <div class="gacha-machine__drum">
               <span class="gacha-ball gacha-ball--1">1</span><span class="gacha-ball gacha-ball--2">5</span><span class="gacha-ball gacha-ball--3">10</span>
               <span class="gacha-ball gacha-ball--4">30</span><span class="gacha-ball gacha-ball--5">100</span><span class="gacha-ball gacha-ball--6">P</span>
